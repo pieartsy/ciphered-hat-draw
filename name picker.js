@@ -1,35 +1,59 @@
 const results = document.getElementById("results");
+let ciphertext = [];
 
+//shuffles array
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
     };
-}
+};
 
-function sendToMap() {
+function copyToClipboard() {
+     /* Copy the text inside the text field */
+    navigator.clipboard.writeText(ciphertext);
+    /* Alert the copied text */
+    alert("Copied the text: " + ciphertext);
+  };
+
+// Creates the encrypted task assignments
+function assignTasks() {
+
+    //clears the div for if the list changes
     results.innerHTML = ""
-    const names = document.getElementById("names").value;
-    const tasks = document.getElementById("tasks").value;
-    //Separates all names between commas
-    const namesList = [...new Set(names.split(/\r?\n/))];
-    let tasksList = [...new Set(tasks.split(/\r?\n/))];
+
+    let names = document.getElementById("names").value;
+    let tasks = document.getElementById("tasks").value;
+
+    //Separates all names and tasks between newlines into an array, then turns it into a set to remove repeated elements, then turns it BACK into an array, then filters to remove empty strings (like if someone hit enter too many times).
+    let namesList = [...new Set(names.split(/\r?\n/))].filter(Boolean);
+    let tasksList = [...new Set(tasks.split(/\r?\n/))].filter(Boolean);
+
+    //Alphabetical order for names
+    namesList.sort((a, b) => a.localeCompare(b));
+    console.log(namesList);
+
+    //Gets the length of the longest task
     let taskPadding = tasksList.reduce((a, b) => a.length > b.length ? a : b, '');
-    taskPadding = taskPadding.length
+    taskPadding = taskPadding.length;
+
+    //If the lists are the same length, shuffle the task list (no sense in shuffling both...). Display the names along with the shuffled enciphered text + padding.
     if (namesList.length == tasksList.length) {
         shuffleArray(tasksList);
         for (let i = 0; i < tasksList.length; i++) {
-        results.innerHTML += "<b>" + namesList[i] + "</b>: " + encipher(tasksList[i].padEnd(taskPadding, "#"), namesList[i]) + "<br>";
-            //results.innerHTML += namesList[i] + "<input type='text' value='" + namesList[i] + "' id='task" + String(i) + "></input>\n"
+            ciphertext = encipher(tasksList[i].padEnd(taskPadding, "#"), namesList[i]);
+            console.log(ciphertext);
+            results.innerHTML += "<button onClick='copyToClipboard()'>Task for " + namesList[i] + "</button>";
         };
     }
     else {
-        results.innerHTML = "Make sure there's an equal amount of names and tasks!";
+        results.innerHTML = "The amount of tasks and people isn't the same!";
     }
     };
 
 // Click on Assign button
-document.getElementById("assign").addEventListener("click", sendToMap);
+document.getElementById("assign").addEventListener("click", assignTasks);
+
 
 // VIGENERE FUNCTIONS https://github.com/leontastic/vigenere.js/blob/master/vigenere.js
 
@@ -40,7 +64,7 @@ document.getElementById("assign").addEventListener("click", sendToMap);
         let plainMap = new Array();
         for (let i = 0; i < str.length; i++) {
             plainMap[i] = charset.indexOf(str[i]);
-        }
+        };
         return plainMap;
     };
     
@@ -49,21 +73,22 @@ document.getElementById("assign").addEventListener("click", sendToMap);
         let cipherText = new Array();
         for (let i = 0; i < plaintext.length; i++) {
             cipherText[i] = charset[(mapNumbers(plaintext)[i] + mapNumbers(key)[i%key.length])%charset.length];
-        }
+        };
         return cipherText.join("");
     };
     
-    // Deciphers a given ciphertext using a given key
+    // Deciphers a given ciphertext using a given key and displays it in the decipheredtext field. I think the way this is coded, the padding symbol I chose (#) straight up does not show up in the decoded version which is cool.
     function decipher() {
         const key = document.getElementById("key").value;
         const ciphertext = document.getElementById("ciphertext").value;
-        let decoded = document.getElementById("decoded")
+        let decipheredtext = document.getElementById("decipheredtext")
         let plainText = new Array();
         for (let i = 0; i < ciphertext.length; i++) {
             plainText[i] = charset[(mapNumbers(ciphertext)[i] - mapNumbers(key)[i%key.length] + charset.length)%charset.length];
-        }
-        decoded.innerText = plainText.join("")
+        };
+        decipheredtext.innerText = plainText.join("");
 
     };
 
+// Click on Decipher button
 document.getElementById("decipher").addEventListener("click", decipher);

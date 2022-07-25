@@ -1,0 +1,3 @@
+styling to be not uggo
+alphabetical order for names - DONE
+button to copy ciphertext to clipboard + instructions for the recipient probably (maybe checkbox to toggle instructions on or off)
