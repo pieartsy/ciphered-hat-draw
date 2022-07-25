@@ -1,4 +1,5 @@
 const results = document.getElementById("results");
+let ciphertext = [];
 
 //shuffles array
 function shuffleArray(array) {
@@ -8,13 +9,11 @@ function shuffleArray(array) {
     };
 };
 
-
-function copyToClipboard(text) {
-    const copytext = text
+function copyToClipboard() {
      /* Copy the text inside the text field */
-    navigator.clipboard.writeText(copytext);
+    navigator.clipboard.writeText(ciphertext);
     /* Alert the copied text */
-    alert("Copied the text: " + copytext);
+    alert("Copied the text: " + ciphertext);
   };
 
 // Creates the encrypted task assignments
@@ -40,12 +39,11 @@ function assignTasks() {
 
     //If the lists are the same length, shuffle the task list (no sense in shuffling both...). Display the names along with the shuffled enciphered text + padding.
     if (namesList.length == tasksList.length) {
-        let ciphertext = []
         shuffleArray(tasksList);
         for (let i = 0; i < tasksList.length; i++) {
             ciphertext = encipher(tasksList[i].padEnd(taskPadding, "#"), namesList[i]);
             console.log(ciphertext);
-            results.innerHTML += "<button class = 'btn' value = '" + ciphertext + "'> Task for " + namesList[i] + "</button>";
+            results.innerHTML += "<button onClick='copyToClipboard()'>Task for " + namesList[i] + "</button>";
         };
     }
     else {
@@ -55,12 +53,6 @@ function assignTasks() {
 
 // Click on Assign button
 document.getElementById("assign").addEventListener("click", assignTasks);
-
-buttons = document.getElementsByClassName("btn");
-
-for(var i = 0; i < buttons.length; i++){
-    buttons[i].addEventListener('click',  function() { copyToClipboard(buttons.value); }, true);
-}
 
 
 // VIGENERE FUNCTIONS https://github.com/leontastic/vigenere.js/blob/master/vigenere.js
@@ -88,10 +80,10 @@ for(var i = 0; i < buttons.length; i++){
     // Deciphers a given ciphertext using a given key and displays it in the decipheredtext field. I think the way this is coded, the padding symbol I chose (#) straight up does not show up in the decoded version which is cool.
     function decipher() {
         const key = document.getElementById("key").value;
-        const cipheredtasks = document.getElementById("ciphertext").value;
+        const ciphertext = document.getElementById("ciphertext").value;
         let decipheredtext = document.getElementById("decipheredtext")
         let plainText = new Array();
-        for (let i = 0; i < cipheredtasks.length; i++) {
+        for (let i = 0; i < ciphertext.length; i++) {
             plainText[i] = charset[(mapNumbers(ciphertext)[i] - mapNumbers(key)[i%key.length] + charset.length)%charset.length];
         };
         decipheredtext.innerText = plainText.join("");
