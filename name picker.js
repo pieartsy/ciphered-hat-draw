@@ -1,5 +1,4 @@
 const results = document.getElementById("results");
-let ciphertext = [];
 
 //shuffles array
 function shuffleArray(array) {
@@ -9,11 +8,14 @@ function shuffleArray(array) {
     };
 };
 
-function copyToClipboard() {
+function copyToClipboard(id, text) {
+
+    const copynotif = document.getElementById(id);
+    const copytext = text.trim();
      /* Copy the text inside the text field */
-    navigator.clipboard.writeText(ciphertext);
+    navigator.clipboard.writeText(copytext);
     /* Alert the copied text */
-    alert("Copied the text: " + ciphertext);
+    copynotif.innerHTML = "<i>Copied!</i>";
   };
 
 // Creates the encrypted task assignments
@@ -31,19 +33,20 @@ function assignTasks() {
 
     //Alphabetical order for names
     namesList.sort((a, b) => a.localeCompare(b));
-    console.log(namesList);
 
     //Gets the length of the longest task
     let taskPadding = tasksList.reduce((a, b) => a.length > b.length ? a : b, '');
     taskPadding = taskPadding.length;
 
-    //If the lists are the same length, shuffle the task list (no sense in shuffling both...). Display the names along with the shuffled enciphered text + padding.
+    //If the lists are the same length, shuffle the task list (no sense in shuffling both). Display the names along with the shuffled enciphered text + padding.
     if (namesList.length == tasksList.length) {
+        let encipheredtask = [];
         shuffleArray(tasksList);
         for (let i = 0; i < tasksList.length; i++) {
-            ciphertext = encipher(tasksList[i].padEnd(taskPadding, "#"), namesList[i]);
-            console.log(ciphertext);
-            results.innerHTML += "<button onClick='copyToClipboard()'>Task for " + namesList[i] + "</button>";
+            encipheredtask = encipher(tasksList[i].padEnd(taskPadding, "#"), namesList[i]);
+            console.log(encipheredtask);
+            let id = "item" + i
+            results.innerHTML += "<div><b>" + namesList[i] + "</b>: " + encipheredtask + " - <button onClick=\"copyToClipboard('" + id + "', '" + encipheredtask + "')\">Copy task</button><span id = '" + id + "'></span></div>";
         };
     }
     else {
@@ -57,7 +60,7 @@ document.getElementById("assign").addEventListener("click", assignTasks);
 
 // VIGENERE FUNCTIONS https://github.com/leontastic/vigenere.js/blob/master/vigenere.js
 
-    let charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.,’\'! ';
+    let charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.,’-! ';
 
     // Converts string into array of numbers representing the location of each character in the given character set.
     function mapNumbers(str) {
@@ -73,7 +76,7 @@ document.getElementById("assign").addEventListener("click", assignTasks);
         let cipherText = new Array();
         for (let i = 0; i < plaintext.length; i++) {
             cipherText[i] = charset[(mapNumbers(plaintext)[i] + mapNumbers(key)[i%key.length])%charset.length];
-        };
+        }
         return cipherText.join("");
     };
     
@@ -81,11 +84,11 @@ document.getElementById("assign").addEventListener("click", assignTasks);
     function decipher() {
         const key = document.getElementById("key").value;
         const ciphertext = document.getElementById("ciphertext").value;
-        let decipheredtext = document.getElementById("decipheredtext")
+        let decipheredtext = document.getElementById("decipheredtext");
         let plainText = new Array();
         for (let i = 0; i < ciphertext.length; i++) {
             plainText[i] = charset[(mapNumbers(ciphertext)[i] - mapNumbers(key)[i%key.length] + charset.length)%charset.length];
-        };
+        }
         decipheredtext.innerText = plainText.join("");
 
     };
