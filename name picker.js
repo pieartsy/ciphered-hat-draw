@@ -8,6 +8,7 @@ function shuffleArray(array) {
     };
 };
 
+//copies encrypted task text to clipboard and prints "copied!" next to it
 function copyToClipboard(id, text) {
 
     const copynotif = document.getElementById(id);
@@ -15,8 +16,17 @@ function copyToClipboard(id, text) {
      /* Copy the text inside the text field */
     navigator.clipboard.writeText(copytext);
     /* Alert the copied text */
-    copynotif.innerHTML = "<i>Copied!</i>";
+    copynotif.innerHTML = "<i>- Copied!</i>";
   };
+
+  function toggle(textid){
+    var showtext = document.getElementById(textid);
+    if(showtext.style.display === "none"){
+        showtext.style.display = "inline-block";
+    }else{
+        showtext.style.display = "none";
+    }
+}
 
 // Creates the encrypted task assignments
 function assignTasks() {
@@ -45,8 +55,9 @@ function assignTasks() {
         for (let i = 0; i < tasksList.length; i++) {
             encipheredtask = encipher(tasksList[i].padEnd(taskPadding, "#"), namesList[i]);
             console.log(encipheredtask);
-            let id = "item" + i
-            results.innerHTML += "<div><b>" + namesList[i] + "</b>: " + encipheredtask + " - <button onClick=\"copyToClipboard('" + id + "', '" + encipheredtask + "')\">Copy task</button><span id = '" + id + "'></span></div>";
+            let id = "task" + i
+            let textid = "text" + i
+            results.innerHTML += "<div><b>" + namesList[i] + "</b> - <button onClick=\"copyToClipboard('" + id + "', '" + encipheredtask + "')\">Copy encrypted task</button><span id = '" + id + "'></span></div><div style='text-indent: 25px;'><button onClick=\"toggle('" + textid + "')\">Show/Hide task</button><span id = '" + textid + "' style = 'display:none;'>" + encipheredtask + "</span></div>";
         };
     }
     else {
