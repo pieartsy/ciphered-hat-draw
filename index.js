@@ -57,7 +57,7 @@ function assignTasks() {
         let url = new URL("results.html", window.location);
         shuffleArray(tasksList);
         for (let i = 0; i < tasksList.length; i++) {
-            encipheredtask = encipher(tasksList[I], namesList[i]);
+            encipheredtask = encipher(tasksList[i], namesList[i]);
             // make a search parameter for the name and task
             url.searchParams.set(namesList[i], encipheredtask);
 
