@@ -61,7 +61,7 @@ function assignTasks() {
             // make a search parameter for the name and task
             url.searchParams.set(namesList[i], encipheredtask);
             
-            const shortened = fetchAsync("");
+            const shortened = fetchAsync("https://is.gd/create.php?format=simple&url=" + url);
             console.log(shortened);
 
             // "Send this link to your participants! [initial location].results.html?[name]=[task] - [button saying "Copy result link"]
