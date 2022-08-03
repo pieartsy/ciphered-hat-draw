@@ -59,7 +59,11 @@ function assignTasks() {
         for (let i = 0; i < tasksList.length; i++) {
             encipheredtask = encipher(tasksList[i].padEnd(taskPadding, "#"), namesList[i]);
             // make a search parameter for the name and task
-            url.searchParams.set(namesList[i], encipheredtask)
+            url.searchParams.set(namesList[i], encipheredtask);
+            
+            const shortened = fetchAsync(url);
+            console.log(shortened);
+
             // "Send this link to your participants! [initial location].results.html?[name]=[task] - [button saying "Copy result link"]
             // when the button is clicked, "Copied!" appears next to it.
             results.innerHTML = "<p>Send this link to your participants!</p><p><a href = " + url + ">" + url + "</a> - <button onClick=\"copyToClipboard('" + url + "')\">Copy result link</button><span id = 'copynotif'></p>"  
@@ -69,6 +73,13 @@ function assignTasks() {
         results.innerHTML = "The amount of tasks and people isn't the same!";
     }
 };
+
+// fetch from is.gd
+async function fetchAsync (url) {
+    let response = await fetch(url);
+    let data = await response.json();
+    return data;
+  }
 
 // Click on Assign button
 if (document.getElementById("assign")) {
