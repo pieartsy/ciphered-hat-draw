@@ -76,7 +76,11 @@ function assignTasks() {
 
 // fetch from is.gd
 async function fetchAsync (url) {
-    let response = await fetch(url);
+    let response = await fetch(url, {
+        headers: {
+            'Access-Control-Allow-Origin': 'https://asterfialla.com/ciphered-hat-draw/'
+        }
+    });
     console.log(response);
     let data = await response.json();
     return data;
