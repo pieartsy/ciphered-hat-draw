@@ -60,9 +60,6 @@ function assignTasks() {
             encipheredtask = encipher(tasksList[i].padEnd(taskPadding, "#"), namesList[i]);
             // make a search parameter for the name and task
             url.searchParams.set(namesList[i], encipheredtask);
-            
-            const shortened = fetchAsync("https://is.gd/create.php?format=simple&url=" + url);
-            console.log(shortened);
 
             // "Send this link to your participants! [initial location].results.html?[name]=[task] - [button saying "Copy result link"]
             // when the button is clicked, "Copied!" appears next to it.
@@ -73,18 +70,6 @@ function assignTasks() {
         results.innerHTML = "The amount of tasks and people isn't the same!";
     }
 };
-
-// fetch from is.gd
-async function fetchAsync (url) {
-    let response = await fetch(url, {
-        headers: {
-            'Access-Control-Allow-Origin': 'https://asterfialla.com/ciphered-hat-draw/'
-        }
-    });
-    console.log(response);
-    let data = await response.json();
-    return data;
-}; 
 
 // Click on Assign button
 if (document.getElementById("assign")) {
