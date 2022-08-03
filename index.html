@@ -8,12 +8,16 @@
 <body>
         <h1>Ciphered Hat Draw</h1>
 
-        <p><i>A lot of virtual tools have a way to draw names or task assignments out of a 'hat'. However, unlike hat picks or randomly assigned slips of paper in real life, these virtual hat draws are only visible to the one person who has the website open. That person also knows what task got picked from the hat and who they're assigning it to. I needed something anonymous but couldn't find anything outside of Secret Santa tools (which I don't <i>think</i> are what I want - or are at the very least more intensive about the process than I need). Given my current lack of knowledge of how to properly encrypt data, create persistent URLs, have passwords, or send texts/emails (which would all be much more sensical ways to do this)...I came up with this. It uses Vigenère Cipher enciphering and deciphering in lieu of the more complicated stuff.
+        <p><i>A lot of virtual tools have a way to draw names or task assignments out of a 'hat'. However, unlike hat picks or randomly assigned slips of paper in real life, these virtual hat draws are only visible to the one person who has the website open. That person also knows what task got picked from the hat and who they're assigning it to. I needed something anonymous but couldn't find anything outside of Secret Santa tools (which I don't <b>think</b> are what I want - or are at the very least more intensive about the process than I need).
+        </p>
+
+        <p>Thus, I came up with this. It uses Vigenère Cipher enciphering and deciphering in lieu of the more complicated stuff.
         </i></p>
 
+        <h2>Instructions</h2>
         <p>One person in your group (such as the usual hat-picker) should put names and tasks in the Assigner and click the button. Make sure there's an equal amount of names and tasks. The tool doesn't allow duplicates.</p>
 
-        <p>When the results appear, give the <b>encrypted task</b> text to each person according to their name. This is a Vigenère Cipher, and can only be decoded with their name as the key. (This <i>does</i> mean that anyone, such as the hat-drawer, who knows the keys assigned to each encrypted text will be able to decrypt the text as well...but cheating defeats the point here, doesn't it?) On each person's own device, they should write their name and paste the encrypted task in the appropriate fields, then click the Decipher button. This will reveal their task assignment.</p>
+        <p>Hat-picker, send the <b>results link</b> to all participants. When a participant types in their name on the results page and clicks the Decipher button, their task assignment will be revealed. (This <i>does</i> mean that anyone, such as the hat-drawer, who knows participants names can find out their assignment...but cheating defeats the point here, doesn't it?)</p>
 
         <h2>Assigner</h2>
         <textarea class="txtarea" id="names" placeholder="Enter names separated by line"></textarea>
@@ -21,13 +25,7 @@
         <button id="assign">Assign tasks!</button>
 
         <div id="results"></div>
-
-        <h2>Decoder</h2>
-        <input type="text" id="key" placeholder="Write your name here.">
-        <input type="text" id="ciphertext" placeholder="Paste the enciphered text here.">
-        <button id="decipher">Decipher your task!</button>
-        <textarea class="txtarea" id="decipheredtext" readonly></textarea>
-
+        
         <script src="name picker.js"></script>
 </body>
 </html>
