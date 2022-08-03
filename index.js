@@ -106,15 +106,20 @@ function decipher() {
 
     //looks for the ciphertext using the search parameters set in assignTasks()
     const query = new URLSearchParams(window.location.search);
-    const ciphertext = query.get(key);
+    if (query.get(key)) {
+        const ciphertext = query.get(key);
+    
+        let decipheredtext = document.getElementById("decipheredtext");
+        let plainText = new Array();
 
-    let decipheredtext = document.getElementById("decipheredtext");
-    let plainText = new Array();
-
-    for (let i = 0; i < ciphertext.length; i++) {
-        plainText[i] = charset[(mapNumbers(ciphertext)[i] - mapNumbers(key)[i%key.length] + charset.length)%charset.length];
+        for (let i = 0; i < ciphertext.length; i++) {
+            plainText[i] = charset[(mapNumbers(ciphertext)[i] - mapNumbers(key)[i%key.length] + charset.length)%charset.length];
+        };
+        decipheredtext.innerText = plainText.join("");
     }
-    decipheredtext.innerText = plainText.join("");
+    else {
+        decipheredtext.innerText = "That name isn't in the list - are you sure you spelled it right?"
+    }
 
 };
 
