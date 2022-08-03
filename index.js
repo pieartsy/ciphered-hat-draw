@@ -61,7 +61,7 @@ function assignTasks() {
             // make a search parameter for the name and task
             url.searchParams.set(namesList[i], encipheredtask);
             
-            const shortened = fetchAsync(url);
+            const shortened = fetchAsync("");
             console.log(shortened);
 
             // "Send this link to your participants! [initial location].results.html?[name]=[task] - [button saying "Copy result link"]
@@ -77,9 +77,10 @@ function assignTasks() {
 // fetch from is.gd
 async function fetchAsync (url) {
     let response = await fetch(url);
+    console.log(response);
     let data = await response.json();
     return data;
-  }
+}; 
 
 // Click on Assign button
 if (document.getElementById("assign")) {
