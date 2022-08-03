@@ -47,9 +47,6 @@ function assignTasks() {
 
     namesList = namesList.map(name => name.toLowerCase());
 
-    //Gets the length of the longest task
-    let taskPadding = tasksList.reduce((a, b) => a.length > b.length ? a : b, '');
-    taskPadding = taskPadding.length;
 
     //If the lists are the same length, shuffle the task list (no sense in shuffling both).
     if (namesList.length == tasksList.length) {
@@ -98,13 +95,13 @@ function encipher(plaintext, key) {
     return cipherText.join("");
 };
     
-    // Deciphers a given ciphertext using the key from a query and displays it in the decipheredtext field. I think the way this is coded, the padding symbol I chose (#) straight up does not show up in the decoded version which is cool.
+    // Deciphers a given ciphertext using the key from a query and displays it in the decipheredtext field.
 function decipher() {
     let key = document.getElementById("key").value;
     //gets rid of whitespace and makes it lowercase
     key = key.trim().toLowerCase();
 
-    //looks for the ciphertext using the search parameters set in assignTasks()
+    //looks for the ciphertext using the search parameters set in assignTasks() and the name the user types in. checks to make sure the name is in the namesList - if it isn't, displays an error/explanation message.
     const query = new URLSearchParams(window.location.search);
     if (query.get(key)) {
         const ciphertext = query.get(key);
@@ -118,7 +115,7 @@ function decipher() {
         decipheredtext.innerText = plainText.join("");
     }
     else {
-        decipheredtext.innerText = "That name isn't in the list - are you sure you spelled it right?"
+        decipheredtext.innerText = "That name wasn't in the initial list - are you sure you spelled it right?"
     }
 
 };
