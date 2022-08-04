@@ -6,26 +6,52 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-        <h1>Ciphered Hat Draw</h1>
+<div class="container">
+    <div class="columns col-xs-11 col-10 col-mx-auto">
+        <div class="column col-12">
+            <h1>Ciphered Hat Draw</h1>
+            <h2>Instructions</h2>
+            <p>One person in your group (such as the usual name-drawer) should put names and tasks in the hat and click the button. Make sure there's an equal amount of names and tasks. The tool doesn't allow duplicates.</p>
 
-        <p><i>A lot of virtual tools have a way to draw names or task assignments out of a 'hat'. However, unlike hat picks or randomly assigned slips of paper in real life, these virtual hat draws are only visible to the one person who has the website open. That person also knows what task got picked from the hat and who they're assigning it to. I needed something anonymous but couldn't find anything outside of Secret Santa tools (which I don't <b>think</b> are what I want - or are at the very least more intensive about the process than I need).
-        </p>
+            <p>Name-drawer, send the <b>results link</b> to all participants. When a participant types in their name on the results page and clicks the <b>Get your task</b> button, their task assignment will be revealed. (This <i>does</i> mean that anyone, such as the name-drawer, who knows participants' names can find out their assignment...but cheating defeats the point here, doesn't it?)</p>
+        </div>
 
-        <p>Thus, I came up with this. It uses Vigenère Cipher enciphering and deciphering in lieu of the more complicated stuff.
-        </i></p>
-
-        <h2>Instructions</h2>
-        <p>One person in your group (such as the usual hat-picker) should put names and tasks in the Assigner and click the button. Make sure there's an equal amount of names and tasks. The tool doesn't allow duplicates.</p>
-
-        <p>Hat-picker, send the <b>results link</b> to all participants. When a participant types in their name on the results page and clicks the Decipher button, their task assignment will be revealed. (This <i>does</i> mean that anyone, such as the hat-drawer, who knows participants names can find out their assignment...but cheating defeats the point here, doesn't it?)</p>
-
-        <h2>Assigner</h2>
-        <textarea class="txtarea" id="names" placeholder="Enter names separated by line"></textarea>
-        <textarea class="txtarea" id="tasks" placeholder="Enter tasks separated by line"></textarea>
-        <button id="assign">Assign tasks!</button>
-
-        <div id="results"></div>
-        
-        <script src="index.js"></script>
+        <div class="column col-12">
+            <h2>Hat</h2>
+        </div>
+        <div id="hattop" class="columns col-9 col-mx-auto index">
+            <div class="column col-6 col-ml-auto">
+                <textarea class="form-input" id="names" placeholder="Enter names separated by line"></textarea>
+            </div>
+            <div class="column col-6 col-mr-auto">
+                <textarea class="form-input" id="tasks" placeholder="Enter tasks separated by line"></textarea>
+            </div>
+        </div>
+        <div id="tip" class="column col-9 col-mx-auto index"></div>
+        <div id="hatbrim" class="column col-12 index">
+            <button id="assign" class="btn">Assign tasks</button>
+        </div>
+            
+        <div id="results" class="columns col-12 col-mx-auto">
+            <div id="link" class="column col-7 col-md-12 col-ml-auto"></div>
+            <div id="copy" class="column col-5 col=md-12 col-mr-auto"></div>
+            <script src="index.js"></script>
+        </div>
+    </div>
+    <div class="popover popover-right">
+        <button style="width:10vw;" class="btn">Explanation</button>
+        <div class="popover-container">
+            <div class="card">
+                <div class="card-body">
+                    <p>A lot of virtual tools have a way to draw names or task assignments out of a 'hat'. However, unlike hat draws or randomly assigned slips of paper in real life, these virtual hat draws are only visible to the one person who has the website open on their own browser. That person also knows what task got picked from the hat and who they're assigning it to. I want something that adheres closer to real life hats draws - no one, including the name-drawer, knows what others are getting (unless you cheat I guess).</p>
+    
+                    <p>Thus, I came up with this. It uses Vigenère Cipher enciphering and deciphering in lieu of the more complicated stuff.</p>
+                    
+                    <p>Find the repo here: <a href="https://github.com/pieartsy/hatdraw" target="_blank">Github repo</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

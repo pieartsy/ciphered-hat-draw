@@ -14,7 +14,7 @@ function copyToClipboard(text) {
      /* Copy the text inside the text field */
     navigator.clipboard.writeText(copytext);
     /* Display the copied text */
-    copynotif.innerHTML = "<i>- Copied!</i>";
+    copynotif.innerHTML = "<i>Copied!</i>";
   };
 
 // toggles the view of the task you just copied
@@ -30,10 +30,10 @@ function toggle(textid){
 // Creates the encrypted task assignments
 function assignTasks() {
 
-    const results = document.getElementById("results");
-
-    //clears the div for if the list changes
-    results.innerHTML = ""
+    const tip = document.getElementById("tip")
+        link = document.getElementById("link")
+        error = document.getElementById("error")
+        copy = document.getElementById("copy");
 
     let names = document.getElementById("names").value;
     let tasks = document.getElementById("tasks").value;
@@ -63,11 +63,15 @@ function assignTasks() {
 
             // "Send this link to your participants! [initial location].results.html?[name]=[task] - [button saying "Copy result link"]
             // when the button is clicked, "Copied!" appears next to it.
-            results.innerHTML = "<p>Send this link to your participants!</p><p><a href = " + url + ">" + url + "</a> - <button onClick=\"copyToClipboard('" + url + "')\">Copy result link</button><span id = 'copynotif'></p>"  
+            tip.innerHTML = "Scroll down for the link to send to your participants!";
+            link.innerHTML="<a href = " + url + ">" + url + "</a>";
+            copy.innerHTML="<button class=\"btn\" onClick=\"copyToClipboard('" + url + "')\">Copy result link</button><span id='copynotif'></span>";  
         };
     }
     else {
-        results.innerHTML = "The amount of tasks and people isn't the same!";
+        tip.innerHTML = "Make sure there are as many tasks as there are names.";
+        link.innerHTML = "";
+        copy.innerHTML = "";
     }
 };
 
