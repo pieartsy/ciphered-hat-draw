@@ -119,7 +119,7 @@ function decipher() {
         decipheredtext.innerText = plainText.join("");
     }
     else {
-        decipheredtext.innerText = "That name wasn't in the initial list - are you sure you spelled it right?"
+        decipheredtext.innerText = "That name wasn't in the initial list - are you sure you spelled it right?";
     }
 
 };

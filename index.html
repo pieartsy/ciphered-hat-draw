@@ -7,6 +7,7 @@
 </head>
 <body>
 <div class="container">
+
     <div class="columns col-xs-11 col-10 col-mx-auto">
         
         <div class="column col-12">
@@ -21,7 +22,7 @@
             <h2>Hat</h2>
         </div>
         
-        <div id="hattop" class="columns col-10 col-mx-auto">
+        <div id="hattop" class="columns col-9 col-mx-auto">
             <div class="column col-6 col-ml-auto">
                 <textarea class="form-input" id="names" placeholder="Enter names separated by line"></textarea>
             </div>
@@ -30,7 +31,7 @@
             </div>
         </div>
         
-        <div id="tip" class="column col-10 col-mx-auto"></div>
+        <div id="tip" class="column col-9 col-mx-auto"></div>
         
         <div id="hatbrim" class="column col-12">
             <button id="assign" class="btn">Assign tasks</button>
@@ -38,23 +39,24 @@
             
         <div id="results" class="columns col-12 col-mx-auto">
             <div id="link" class="column col-7 col-md-12 col-ml-auto"></div>
-            <div id="copy" class="column col-5 col=md-12 col-mr-auto"></div>
+            <div id="copy" class="column col-5 col-mx-auto"></div>
             <script src="index.js"></script>
         </div>
-    </div>
-    <div class="popover popover-right">
-        <button class="btn">Explanation</button>
-        <div class="popover-container">
-            <div class="card">
-                <div class="card-body">
-                    <p>A lot of virtual tools have a way to draw names or task assignments out of a 'hat'. However, unlike hat draws or randomly assigned slips of paper in real life, these virtual hat draws are only visible to the one person who has the website open on their own browser. That person also knows what task got picked from the hat and who they're assigning it to. I want something that adheres closer to real life hats draws - no one, including the name-drawer, knows what others are getting (unless you cheat I guess).</p>
+
+        <div class="accordion">
+            <input type="checkbox" id="accordion-1" name="accordion-checkbox" hidden>
+            <label class="accordion-header btn" for="accordion-1">
+                Explanation
+            </label>
+            <div class="accordion-body">
+                <p>A lot of virtual tools have a way to draw names or task assignments out of a 'hat'. However, unlike hat draws or randomly assigned slips of paper in real life, these virtual hat draws are only visible to the one person who has the website open on their own browser. That person also knows what task got picked from the hat and who they're assigning it to. I want something that adheres closer to real life hats draws - no one, including the name-drawer, knows what others are getting (unless you cheat I guess).</p>
     
-                    <p>Thus, I came up with this. It uses Vigenère Cipher enciphering and deciphering in lieu of the more complicated stuff.</p>
+                <p>Thus, I came up with this. It uses Vigenère Cipher enciphering and deciphering in lieu of the more complicated stuff.</p>
                     
-                    <p>Find the repo here: <a href="https://github.com/pieartsy/hatdraw" target="_blank">Github repo</a></p>
-                </div>
+                <p>Find the repo here: <a href="https://github.com/pieartsy/hatdraw" target="_blank">Github repo</a></p>
             </div>
         </div>
+
     </div>
 </div>
 </body>

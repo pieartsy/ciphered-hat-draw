@@ -563,7 +563,7 @@ html:lang(ko),
   appearance: none;
   background: #fff;
   border: .05rem solid #5755d9;
-  border-radius: .1rem;
+  border-radius: 5px;
   color: #5755d9;
   cursor: pointer;
   display: inline-block;
@@ -578,9 +578,8 @@ html:lang(ko),
   -ms-user-select: none;
   user-select: none;
   vertical-align: middle;
-  white-space: break-spaces;
   width: 100%;
-  word-wrap:anywhere;
+  word-wrap: anywhere;
 }
 
 .btn:focus {
@@ -850,7 +849,7 @@ legend {
   background: #fff;
   background-image: none;
   border: .05rem solid #5755d9;
-  border-radius: .1rem;
+  border-radius: 10px;
   color: #3b4351;
   display: block;
   max-width: 100%;
@@ -859,6 +858,8 @@ legend {
   position: relative;
   transition: background .2s, border .2s, box-shadow .2s, color .2s;
   width: 100%;
+  word-wrap: anywhere;
+
 }
 
 .form-input:focus {
@@ -2768,6 +2769,12 @@ summary.accordion-header::-webkit-details-marker {
   top: 0;
 }
 
+@media (max-width: 600px) {
+  .popover {
+    position: relative;
+  }
+}
+
 .popover .popover-container {
   left: 50%;
   opacity: 0;
@@ -3773,16 +3780,22 @@ a.text-error:visited {
 #results-hattop  {
   background-color: rgb(31, 26, 44);
   padding: 1rem .5rem;
+  height: 50vh;
+}
+
+@media (max-width: 600px) {
+  #hattop,
+  #results-hattop  {
+    height: 35vh;
+  }
 }
 
 #hattop {
-  height: 50vh;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
 }
 
 #results-hattop {
-  height: 40vh;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
 }
@@ -3826,3 +3839,5 @@ a.text-error:visited {
 #copynotif {
   text-align: center;
 }
+
+/* from spectre icons */

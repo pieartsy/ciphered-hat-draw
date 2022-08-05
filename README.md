@@ -1,4 +1,6 @@
-# ciphered-hat-draw
-A lot of virtual tools have a way to draw names or task assignments out of a 'hat'. However, unlike hat picks or randomly assigned slips of paper in real life, these virtual hat draws are only visible to the one person who has the website open. That person also knows what task got picked from the hat and who they're assigning it to. I needed something anonymous but couldn't find anything outside of Secret Santa tools (which I don't <i>think</i> are what I want - or are at the very least more intensive about the process than I need). Given my current lack of knowledge of how to properly encrypt data, create persistent URLs, have passwords, or send texts/emails (which would all be much more sensical ways to do this)...I came up with this. It uses Vigenère Cipher enciphering and deciphering in lieu of the more complicated stuff.
+# Hat Draw
+A lot of virtual tools have a way to draw names or task assignments out of a 'hat'. However, unlike hat draws or randomly assigned slips of paper in real life, these virtual hat draws are only visible to the one person who has the website open on their own browser. That person also knows what task got picked from the hat and who they're assigning it to. I want something that adheres closer to real life hats draws - no one, including the name-drawer, knows what others are getting (unless you cheat I guess).
+    
+Thus, I came up with this. It uses Vigenère Cipher enciphering and deciphering in lieu of the more complicated stuff.
 
 Find the tool here: [tool](https://asterfialla.com/ciphered-hat-draw/)
