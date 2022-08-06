@@ -11,6 +11,12 @@ html {
   font-family: 'Neucha', cursive; /* 1 */
   -webkit-text-size-adjust: 100%; /* 3 */ 
   -ms-text-size-adjust: 100%; /* 3 */
+
+  /*custom properties */
+  --hatcolor: rgb(15, 9, 13);
+  --hataccent:rgb(219, 38, 114);
+  --hatlight: rgb(248, 230, 243);
+
 }
 
 /* Sections ========================================================================== */
@@ -57,12 +63,6 @@ hr {
 a {
   background-color: transparent; /* 1 */
   -webkit-text-decoration-skip: objects; /* 2 */
-}
-
-/** Remove the outline on focused links when they are also active or hovered in all browsers (opinionated). */
-a:active,
-a:hover {
-  outline-width: 0;
 }
 
 /** Modify default styling of address. */
@@ -214,6 +214,7 @@ progress {
 textarea {
   overflow: auto;
   resize: none;
+  outline: none;
 }
 
 /** 1. Add the correct box sizing in IE 10-. 2. Remove the padding in IE 10-. */
@@ -292,33 +293,33 @@ html {
 
 body {
   background: #fff;
-  color: #3b4351;
+  color: var(--hatcolor);
   font-size: 1rem;
   overflow-x: hidden;
   text-rendering: optimizeLegibility;
 }
 
 a {
-  color: #5755d9;
+  color: var(--hataccent);
   outline: none;
   text-decoration: none;
   word-wrap: break-word;
 }
 
 a:focus {
-  box-shadow: 0 0 0 .1rem rgba(87, 85, 217, .2);
+  box-shadow: 0 0 .1rem .1rem var(--hatcolor);
 }
 
 a:focus,
 a:hover,
 a:active,
 a.active {
-  color: #302ecd;
   text-decoration: underline;
+  font-weight:bolder;
 }
 
 a:visited {
-  color: #807fe2;
+  font-style: italic;
 }
 
 h1,
@@ -562,9 +563,9 @@ html:lang(ko),
   -moz-appearance: none;
   appearance: none;
   background: #fff;
-  border: .05rem solid #5755d9;
+  border: .1rem solid var(--hataccent);
   border-radius: 5px;
-  color: #5755d9;
+  color: var(--hataccent);
   cursor: pointer;
   display: inline-block;
   margin: .8rem 0;
@@ -583,21 +584,21 @@ html:lang(ko),
 }
 
 .btn:focus {
-  box-shadow: 0 0 0 .1rem rgba(87, 85, 217, .2);
+  box-shadow: 0 0 .1rem .1rem var(--hatlight);
 }
 
 .btn:focus,
 .btn:hover {
-  background: #c9c9ec;
-  border-color: #5755d9;
-  color: #322fb9;
+  background: var(--hatlight);
+  border-color: var(--hataccent);
+  color: var(--hatcolor);
   text-decoration: none;
 }
 
 .btn:active,
 .btn.active {
-  background: #4b48d6;
-  border-color: #3634d2;
+  background: var(--hataccent);
+  border-color: var(--hatcolor);
   color: #fff;
   text-decoration: none;
 }
@@ -827,7 +828,6 @@ legend {
 }
 
 .form-label {
-  display: block;
   color: #fff;
 }
 
@@ -847,31 +847,28 @@ legend {
   appearance: none;
   background: #fff;
   background-image: none;
-  border: .05rem solid #5755d9;
+  border: .05rem solid var(--hataccent);
   border-radius: 10px;
-  color: #3b4351;
-  display: block;
+  color: var(--hatcolor);
   max-width: 100%;
-  outline: none;
   padding: .25rem .4rem;
   position: relative;
   transition: background .2s, border .2s, box-shadow .2s, color .2s;
   width: 100%;
   word-wrap: anywhere;
-
 }
 
 
 .form-input:-ms-input-placeholder {
-  color: #7b808a;
+  color: var(--hataccent);
 }
 
 .form-input::-ms-input-placeholder {
-  color: #7b808a;
+  color: var(--hataccent);
 }
 
 .form-input::placeholder {
-  color: #7b808a;
+  color: var(--hataccent);
 }
 
 .form-input.input-sm {
@@ -899,14 +896,18 @@ legend {
 textarea.form-input,
 textarea.form-input.input-lg,
 textarea.form-input.input-sm {
-  height: 100%;
+  height: 40vh;
   width: 100%;
 }
 
-.form-input:focus {
-    border-color: #5755d9; 
-    border-style: solid;
-    box-shadow: 0 0 0 .1rem rgb(4, 0, 255);
+@media (max-width: 600px) {
+  textarea.form-input {
+    height: 20vh;
+  }
+}
+
+textarea.form-input:focus {
+  box-shadow: 0 0 .1rem .1rem var(--hatlight);
 }
 
 .form-input-hint {
@@ -942,8 +943,8 @@ textarea.form-input.input-sm {
 }
 
 .form-select:focus {
-  border-color: #5755d9; 
-  box-shadow: 0 0 0 .1rem rgba(87, 85, 217, .2);
+  border-color: var(--hataccent); 
+  box-shadow: 0 0 0 .1rem var(--hatlight);
 }
 
 .form-select::-ms-expand {
@@ -1349,7 +1350,7 @@ textarea.form-input.input-sm {
 }
 
 .form-input[readonly] {
-  background-color: #f7f8f9;
+  background-color: var(--hatlight);
 }
 
 input:disabled + .form-icon,
@@ -3775,18 +3776,15 @@ a.text-error:visited {
 }
 
 /* custom */
-#hattop,
-#results-hattop  {
-  background-color: rgb(31, 26, 44);
-  padding: 1rem .5rem;
-  height: 50vh;
+
+.hat {
+  height: 10%
 }
 
-@media (max-width: 600px) {
-  #hattop,
-  #results-hattop  {
-    height: 35vh;
-  }
+#hattop,
+#results-hattop  {
+  background-color: var(--hatcolor);
+  padding: 1rem .5rem;
 }
 
 #hattop {
@@ -3801,8 +3799,8 @@ a.text-error:visited {
 
 #tip,
 #results-tip {
-  background-color: rgb(60, 135, 248);
-  color: rgb(31, 26, 44);
+  background-color: var(--hataccent);
+  color: #fff;
   
 }
 
@@ -3819,7 +3817,7 @@ a.text-error:visited {
 
 #hatbrim,
 #results-hatbrim {
-  background-color: rgb(31, 26, 44);
+  background-color: var(--hatcolor);
   border-radius: 10px;
 }
 
