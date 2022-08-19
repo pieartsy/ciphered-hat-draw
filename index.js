@@ -47,28 +47,31 @@ function assignTasks() {
 
     namesList = namesList.map(name => name.toLowerCase());
 
+    let encipheredtask = [];
+    let url = new URL("results.html", window.location);
 
-    //If the lists are the same length, shuffle the task list (no sense in shuffling both).
-    if (namesList.length == tasksList.length) {
-        let encipheredtask = [];
-        let url = new URL("results.html", window.location);
-        shuffleArray(tasksList);
-        for (let i = 0; i < tasksList.length; i++) {
-            encipheredtask = encipher(tasksList[i], namesList[i]);
-            // make a search parameter for the name and task
-            url.searchParams.set(namesList[i], encipheredtask);
+    //Shuffle the task list (no sense in shuffling both).
+    shuffleArray(tasksList);
 
-            // "Send this link to your participants! [initial location].results.html?[name]=[task] - [button saying "Copy result link"]
-            // when the button is clicked, "Copied!" appears next to it.
-            tip.innerHTML = "Scroll down for the link to send to your participants!";
-            link.innerHTML="<a href = " + url + ">" + url + "</a>";
-            copy.innerHTML="<button class=\"btn\" onClick=\"copyToClipboard('" + url + "')\">Copy result link</button><span id='copynotif'></span>";  
-        };
-    }
-    else {
-        tip.innerHTML = "Make sure there are as many tasks as there are names.";
-        link.innerHTML = "";
-        copy.innerHTML = "";
+    for (let i = 0; i < namesList.length; i++) {
+        //if there are more names than tasks, add the same tasks to the tasks list so everyone gets a task
+        if (namesList.length > tasksList.length) {
+            tasksList = tasksList.concat(tasksList[i]);
+        }
+        //if there are more tasks than names, discard the rest of the tasks
+        else if (!namesList[i]) {
+            break;
+        }
+        
+        encipheredtask = encipher(tasksList[i], namesList[i]);
+        // make a search parameter for the name and task
+        url.searchParams.set(namesList[i], encipheredtask);
+
+    // "Send this link to your participants! [initial location].results.html?[name]=[task] - [button saying "Copy result link"]
+    // when the button is clicked, "Copied!" appears next to it.
+    tip.innerHTML = "Scroll down for the link to send to your participants!";
+    link.innerHTML="<a href = " + url + ">" + url + "</a>";
+    copy.innerHTML="<button class=\"btn\" onClick=\"copyToClipboard('" + url + "')\">Copy result link</button><span id='copynotif'></span>";  
     }
 };
 
