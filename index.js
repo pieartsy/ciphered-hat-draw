@@ -47,7 +47,8 @@ function assignTasks() {
 
     namesList = namesList.map(name => name.toLowerCase());
 
-    let encipheredtask = [];
+    let encipheredtask = "";
+    let encipheredname = "";
     let url = new URL("results.html", window.location);
 
     shuffleArray(tasksList);
@@ -93,11 +94,12 @@ function assignTasks() {
             
             //if there's more than one task, format it to say "X and Y" as opposed to "X,Y"
             const re = /,\b/;
-            let formattedTask = namesTasksObj[namesList[i]].toString().replace(re, ", and ");
-            //enciphers the tasks
+            let formattedTask = namesTasksObj[namesList[i]].toString().replace(re, " and ");
+            //enciphers the tasks and names
             encipheredtask = encipher(formattedTask, namesList[i]);
+            encipheredname = encipher(namesList[i].trim().toLowerCase(), namesList[i]);
             // makes a search parameter for the name and task
-            url.searchParams.set(namesList[i], encipheredtask);
+            url.searchParams.set(encipheredname, encipheredtask);
 
             //count the while loop up
             j++
@@ -117,9 +119,37 @@ if (document.getElementById("assign")) {
 document.getElementById("assign").addEventListener("click", assignTasks);
 }
 
+// Deciphers the query and ciphertext and displays the latter in the decipheredtext field.
+function getTasks() {
+    let key = document.getElementById("key").value;
+    //gets rid of whitespace and makes it lowercase
+    key = key.trim().toLowerCase();
+
+    //enciphers the key
+    const encipheredkey = encipher(key, key);
+    //looks for the ciphertext using the enciphered search parameters set in assignTasks(). Checks to make sure that the query exists. if it doesn't, displays an error/explanation message.
+    const query = new URLSearchParams(window.location.search);
+    if (query.get(encipheredkey)) {
+        const ciphertext = query.get(encipheredkey);
+        const decipheredtext = document.getElementById("decipheredtext");
+
+        // deciphers the text using the original key (since that's what ciphered it)
+        decipheredtext.innerText = decipher(ciphertext, key);
+    }
+    else {
+        decipheredtext.innerText = "That name wasn't in the initial list - are you sure you spelled it right?";
+    }
+
+};
+
+// Click on Decipher button
+if (document.getElementById("decipher")) {
+    document.getElementById("decipher").addEventListener("click", getTasks);
+}
+
 // VIGENERE FUNCTIONS https://github.com/leontastic/vigenere.js/blob/master/vigenere.js
 
-let charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.,’-!? 1234567890';
+const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.,’-!? 1234567890';
 
     // Converts string into array of numbers representing the location of each character in the given character set.
 function mapNumbers(str) {
@@ -139,32 +169,12 @@ function encipher(plaintext, key) {
     return cipherText.join("");
 };
     
-    // Deciphers a given ciphertext using the key from a query and displays it in the decipheredtext field.
-function decipher() {
-    let key = document.getElementById("key").value;
-    //gets rid of whitespace and makes it lowercase
-    key = key.trim().toLowerCase();
-
-    //looks for the ciphertext using the search parameters set in assignTasks() and the name the user types in. checks to make sure the name is in the namesList - if it isn't, displays an error/explanation message.
-    const query = new URLSearchParams(window.location.search);
-    if (query.get(key)) {
-        const ciphertext = query.get(key);
     
-        let decipheredtext = document.getElementById("decipheredtext");
+    // Deciphers a given ciphertext using a given key
+function decipher(ciphertext, key) {
         let plainText = new Array();
-
         for (let i = 0; i < ciphertext.length; i++) {
             plainText[i] = charset[(mapNumbers(ciphertext)[i] - mapNumbers(key)[i%key.length] + charset.length)%charset.length];
-        };
-        decipheredtext.innerText = plainText.join("");
-    }
-    else {
-        decipheredtext.innerText = "That name wasn't in the initial list - are you sure you spelled it right?";
-    }
-
+        }
+        return plainText.join("");
 };
-
-// Click on Decipher button
-if (document.getElementById("decipher")) {
-document.getElementById("decipher").addEventListener("click", decipher);
-}
