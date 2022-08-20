@@ -22,7 +22,7 @@ function toggle(textid){
     var showtext = document.getElementById(textid);
     if(showtext.style.display === "none"){
         showtext.style.display = "inline-block";
-    }else{
+    } else {
         showtext.style.display = "none";
     }
 }
@@ -50,30 +50,67 @@ function assignTasks() {
     let encipheredtask = [];
     let url = new URL("results.html", window.location);
 
-    //Shuffle the task list (no sense in shuffling both).
     shuffleArray(tasksList);
+    shuffleArray(namesList);
 
+    // object to hold multiple tasks per name if need be
+    let namesTasksObj = {};
+
+    // makes all values for each name an array
     for (let i = 0; i < namesList.length; i++) {
-        //if there are more names than tasks, add the same tasks to the tasks list so everyone gets a task
-        if (namesList.length > tasksList.length) {
-            tasksList = tasksList.concat(tasksList[i]);
+        namesTasksObj[namesList[i]] = []
+    }
+
+    // loops the inner for loop for as many iterations as there are tasks (counts up within the for loop as well)
+    let j = 0;
+    while (j < tasksList.length) {
+        for (let i = 0; i < namesList.length; i++) {
+            // if there are more names than tasks, repeat tasks to make up the difference, and add to the object
+            if (namesList.length > tasksList.length) {
+                tasksList.push(tasksList[i]);
+                namesTasksObj[namesList[i]].push(tasksList[j])
+            }
+            // if there are more tasks than names
+            else if (namesList.length < tasksList.length) {
+                // if the task has already been assigned to a name (looking through all existing values in the object (which is flattened because the values are arrays)), go to the next iteration of the for loop
+                if (Object.values(namesTasksObj).flat().includes(tasksList[j])) {
+                    continue;
+                }
+                // if not, and there are still enough tasks left over, add to the object. otherwise, break the loop (if you don't check this then it adds an undefined value...)
+                else {
+                    if (tasksList[j]) {
+                    namesTasksObj[namesList[i]].push(tasksList[j])
+                    }
+                    else {
+                        break;
+                    }
+                }
+            }
+            //if there's the same amount of tasks as names, add to the object
+            else if (namesList.length == tasksList.length) {
+                namesTasksObj[namesList[i]].push(tasksList[j])
+            }
+            
+            //if there's more than one task, format it to say "X and Y" as opposed to "X,Y"
+            const re = /,\b/;
+            let formattedTask = namesTasksObj[namesList[i]].toString().replace(re, ", and ");
+            //enciphers the tasks
+            encipheredtask = encipher(formattedTask, namesList[i]);
+            // makes a search parameter for the name and task
+            url.searchParams.set(namesList[i], encipheredtask);
+
+            //count the while loop up
+            j++
         }
-        //if there are more tasks than names, discard the rest of the tasks
-        else if (!namesList[i]) {
-            break;
-        }
-        
-        encipheredtask = encipher(tasksList[i], namesList[i]);
-        // make a search parameter for the name and task
-        url.searchParams.set(namesList[i], encipheredtask);
+    };
 
     // "Send this link to your participants! [initial location].results.html?[name]=[task] - [button saying "Copy result link"]
     // when the button is clicked, "Copied!" appears next to it.
     tip.innerHTML = "Scroll down for the link to send to your participants!";
     link.innerHTML="<a href = " + url + ">" + url + "</a>";
     copy.innerHTML="<button class=\"btn\" onClick=\"copyToClipboard('" + url + "')\">Copy result link</button><span id='copynotif'></span>";  
-    }
-};
+
+}
 
 // Click on Assign button
 if (document.getElementById("assign")) {
@@ -82,7 +119,7 @@ document.getElementById("assign").addEventListener("click", assignTasks);
 
 // VIGENERE FUNCTIONS https://github.com/leontastic/vigenere.js/blob/master/vigenere.js
 
-let charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.,’-! ';
+let charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.,’-!? 1234567890';
 
     // Converts string into array of numbers representing the location of each character in the given character set.
 function mapNumbers(str) {
