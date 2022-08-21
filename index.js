@@ -17,16 +17,6 @@ function copyToClipboard(text) {
     copynotif.innerHTML = "<i>Copied!</i>";
   };
 
-// toggles the view of the task you just copied
-function toggle(textid){
-    const showtext = document.getElementById(textid);
-    if(showtext.style.display === "none"){
-        showtext.style.display = "inline-block";
-    } else {
-        showtext.style.display = "none";
-    }
-}
-
 // Creates the encrypted task assignments
 function assignTasks() {
 
