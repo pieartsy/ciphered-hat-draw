@@ -118,7 +118,6 @@ function assignTasks() {
             j++
         }
     };
-    console.log(namesTasksObj)
     // "Send this link to your participants! [initial location].results.html?[name]=[task] - [button saying "Copy result link"]
     // when the button is clicked, "Copied!" appears next to it.
     tip.innerHTML = "Scroll down for the link to send to your participants!";
