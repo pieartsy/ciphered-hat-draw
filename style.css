@@ -1014,11 +1014,7 @@ textarea.form-input:focus {
 .form-checkbox,
 .form-radio,
 .form-switch {
-  display: block;
   line-height: 1.2rem;
-  margin: .2rem 0;
-  min-height: 1.4rem;
-  padding: .1rem .4rem .1rem 1.2rem;
   position: relative;
 }
 
@@ -1036,21 +1032,21 @@ textarea.form-input:focus {
 .form-checkbox input:focus + .form-icon,
 .form-radio input:focus + .form-icon,
 .form-switch input:focus + .form-icon {
-  border-color: #5755d9; 
-  box-shadow: 0 0 0 .1rem rgba(87, 85, 217, .2);
+  border-color: var(--hataccent); 
+  box-shadow: 0 0 0 .1rem var(--hatlight);
 }
 
 .form-checkbox input:checked + .form-icon,
 .form-radio input:checked + .form-icon,
 .form-switch input:checked + .form-icon {
-  background: #5755d9;
-  border-color: #5755d9;
+  background: var(--hataccent);
+  border-color: var(--hataccent);
 }
 
 .form-checkbox .form-icon,
 .form-radio .form-icon,
 .form-switch .form-icon {
-  border: .05rem solid #bcc3ce;
+  border: .05rem solid var(--hataccent);
   cursor: pointer;
   display: inline-block;
   position: absolute;
@@ -1143,17 +1139,18 @@ textarea.form-input:focus {
 }
 
 .form-switch .form-icon {
-  background: #bcc3ce;
+  background: var(--hatlight);
   background-clip: padding-box;
   border-radius: .45rem;
   height: .9rem;
   left: 0;
-  top: .25rem;
+  top: .1rem;
   width: 1.6rem;
 }
 
 .form-switch .form-icon::before {
   background: #fff;
+  border: .05rem solid var(--hataccent);
   border-radius: 50%;
   content: "";
   display: block;
@@ -3784,7 +3781,7 @@ a.text-error:visited {
 #hattop,
 #results-hattop  {
   background-color: var(--hatcolor);
-  padding: 1rem .5rem;
+  padding: 1rem .5rem .5rem;
 }
 
 #hattop {

@@ -19,7 +19,7 @@ function copyToClipboard(text) {
 
 // toggles the view of the task you just copied
 function toggle(textid){
-    var showtext = document.getElementById(textid);
+    const showtext = document.getElementById(textid);
     if(showtext.style.display === "none"){
         showtext.style.display = "inline-block";
     } else {
@@ -33,14 +33,22 @@ function assignTasks() {
     const tip = document.getElementById("tip")
         link = document.getElementById("link")
         error = document.getElementById("error")
-        copy = document.getElementById("copy");
+        copy = document.getElementById("copy")
+        discard = document.getElementById("discard");
 
     let names = document.getElementById("names").value;
     let tasks = document.getElementById("tasks").value;
 
+    console.log(discard.checked);
+
     //Separates all names and tasks between newlines into an array, then turns it into a set to remove repeated elements, then turns it BACK into an array, then filters to remove empty strings (like if someone hit enter too many times).
     let namesList = [...new Set(names.split(/\r?\n/))].filter(Boolean);
     let tasksList = [...new Set(tasks.split(/\r?\n/))].filter(Boolean);
+
+    if (namesList.length == 0 || tasksList.length == 0) {
+        tip.innerHTML = "Make sure the lists aren't empty before you assign.";
+        return;
+    }
 
     //Alphabetical order for names
     namesList.sort((a, b) => a.localeCompare(b));
@@ -64,23 +72,38 @@ function assignTasks() {
 
     // loops the inner for loop for as many iterations as there are tasks (counts up within the for loop as well)
     let j = 0;
+    parentloop:
     while (j < tasksList.length) {
         for (let i = 0; i < namesList.length; i++) {
-            // if there are more names than tasks, repeat tasks to make up the difference, and add to the object
+            // if there are more names than tasks
             if (namesList.length > tasksList.length) {
-                tasksList.push(tasksList[i]);
-                namesTasksObj[namesList[i]].push(tasksList[j])
+                // if you're not discarding extra tasks, repeat tasks to make up the difference, and add to the object
+                if (discard.checked == false) {
+                    tasksList.push(tasksList[i]);
+                    namesTasksObj[namesList[i]].push(tasksList[j])
+                }
+                // if you are discarding extra tasks and there's no more tasks left, let the namer know they have no task
+                else if (!tasksList[i]) {
+                    namesTasksObj[namesList[i]].push("Task avoided...for now!")
+                }
+                // if you are discarding extra tasks but there are still tasks left, continue to distribute them
+                else {
+                    namesTasksObj[namesList[i]].push(tasksList[j])
+                }
             }
             // if there are more tasks than names
             else if (namesList.length < tasksList.length) {
+                if (discard.checked == true && !namesList[j]) {
+                    break parentloop;
+                }
                 // if the task has already been assigned to a name (looking through all existing values in the object (which is flattened because the values are arrays)), go to the next iteration of the for loop
-                if (Object.values(namesTasksObj).flat().includes(tasksList[j])) {
+                else if (Object.values(namesTasksObj).flat().includes(tasksList[j])) {
                     continue;
                 }
                 // if not, and there are still enough tasks left over, add to the object. otherwise, break the loop (if you don't check this then it adds an undefined value...)
                 else {
                     if (tasksList[j]) {
-                    namesTasksObj[namesList[i]].push(tasksList[j])
+                        namesTasksObj[namesList[i]].push(tasksList[j])
                     }
                     else {
                         break;
@@ -93,8 +116,8 @@ function assignTasks() {
             }
             
             //if there's more than one task, format it to say "X and Y" as opposed to "X,Y"
-            const re = /,\b/;
-            let formattedTask = namesTasksObj[namesList[i]].toString().replace(re, " and ");
+            const re = /,\b/ig;
+            let formattedTask = namesTasksObj[namesList[i]].toString().replaceAll(re, " and ");
             //enciphers the tasks and names
             encipheredtask = encipher(formattedTask, namesList[i]);
             encipheredname = encipher(namesList[i].trim().toLowerCase(), namesList[i]);
@@ -105,12 +128,12 @@ function assignTasks() {
             j++
         }
     };
-
+    console.log(namesTasksObj)
     // "Send this link to your participants! [initial location].results.html?[name]=[task] - [button saying "Copy result link"]
     // when the button is clicked, "Copied!" appears next to it.
     tip.innerHTML = "Scroll down for the link to send to your participants!";
     link.innerHTML="<a href = " + url + ">" + url + "</a>";
-    copy.innerHTML="<button class=\"btn\" onClick=\"copyToClipboard('" + url + "')\">Copy result link</button><span id='copynotif'></span>";  
+    copy.innerHTML="<button class=\"btn\" onClick=\"copyToClipboard('" + url + "')\">Copy results link</button><span id='copynotif'></span>";  
 
 }
 
