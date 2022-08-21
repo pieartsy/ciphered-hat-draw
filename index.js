@@ -29,8 +29,6 @@ function assignTasks() {
     let names = document.getElementById("names").value;
     let tasks = document.getElementById("tasks").value;
 
-    console.log(discard.checked);
-
     //Separates all names and tasks between newlines into an array, then turns it into a set to remove repeated elements, then turns it BACK into an array, then filters to remove empty strings (like if someone hit enter too many times).
     let namesList = [...new Set(names.split(/\r?\n/))].filter(Boolean);
     let tasksList = [...new Set(tasks.split(/\r?\n/))].filter(Boolean);
@@ -105,12 +103,14 @@ function assignTasks() {
                 namesTasksObj[namesList[i]].push(tasksList[j])
             }
             
-            //if there's more than one task, format it to say "X and Y" as opposed to "X,Y"
+            //if there's more than one task, format it to say "X and Y" as opposed to "X,Y". replace angled single and double quotes with normal quotes (accepted by base64)
             const re = /,\b/ig;
-            let formattedTask = namesTasksObj[namesList[i]].toString().replaceAll(re, " and ");
-            //enciphers the tasks and names
-            encipheredtask = encipher(formattedTask, namesList[i]);
-            encipheredname = encipher(namesList[i].trim().toLowerCase(), namesList[i]);
+            const requotes = /“|”/ig;
+            let formattedTask = namesTasksObj[namesList[i]].toString().replaceAll(re, " and ").replaceAll('’', "'").replaceAll(requotes, '\"');
+
+            //enciphers the tasks and names and encodes them in base64 so that they can include more of the extended ASCII set without being godawfully long
+            encipheredtask = btoa(encipher(formattedTask, namesList[i]));
+            encipheredname = btoa(encipher(namesList[i], namesList[i]));
             // makes a search parameter for the name and task
             url.searchParams.set(encipheredname, encipheredtask);
 
@@ -138,15 +138,15 @@ function getTasks() {
     key = key.trim().toLowerCase();
 
     //enciphers the key
-    const encipheredkey = encipher(key, key);
+    const encipheredkey = btoa(encipher(key, key));
     //looks for the ciphertext using the enciphered search parameters set in assignTasks(). Checks to make sure that the query exists. if it doesn't, displays an error/explanation message.
     const query = new URLSearchParams(window.location.search);
     if (query.get(encipheredkey)) {
         const ciphertext = query.get(encipheredkey);
         const decipheredtext = document.getElementById("decipheredtext");
 
-        // deciphers the text using the original key (since that's what ciphered it)
-        decipheredtext.innerText = decipher(ciphertext, key);
+        // deciphers the text using the original key (since that's what ciphered it), unencoded from base64
+        decipheredtext.innerText = decipher(atob(ciphertext), key);
     }
     else {
         decipheredtext.innerText = "That name wasn't in the initial list - are you sure you spelled it right?";
@@ -161,7 +161,7 @@ if (document.getElementById("decipher")) {
 
 // VIGENERE FUNCTIONS https://github.com/leontastic/vigenere.js/blob/master/vigenere.js
 
-const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.,’-!? 1234567890';
+const charset = '!"#$%&+()*,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\']^_`abcdefghijklmnopqrstuvwxyz¿£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾{|}¢¡~ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ ';
 
     // Converts string into array of numbers representing the location of each character in the given character set.
 function mapNumbers(str) {
