@@ -1,6 +1,8 @@
-# Hat Draw
-A lot of virtual tools have a way to draw names or task assignments out of a 'hat'. However, unlike hat draws or randomly assigned slips of paper in real life, these virtual hat draws are only visible to the one person who has the website open on their own browser. That person also knows what task got picked from the hat and who they're assigning it to. I wanted something that adheres closer to real life hats draws - no one, including the name-drawer, knows what others are getting (unless you cheat I guess).</p>
+# Ciphered Hat Draw
+A lot of virtual 'draw from a hat' tools are only visible to the one person who has the website open on their own browser. That person also knows what task got picked from the hat and who they're assigning it to.
+
+Instead with this tool, you can pass the hat assignments around without knowing what anyone else is getting (unless you "peek"). You put your names and tasks into the hat, share the link with others, and when they put their name in the results, they get their task. I feel like this aligns better with the reasons people draw from hats in person.
     
-Thus, I came up with this. It uses Vigenère Cipher enciphering and deciphering in lieu of the more complicated stuff. It also encodes into/decodes from base64 to allow for (most of) the [extended ASCII](ascii-code.com/) set.
+It uses [Vigenère Cipher](https://github.com/leontastic/vigenere.js) enciphering and deciphering in lieu of the more complicated stuff. It also encodes into/decodes from a [compression library](https://pieroxy.net/blog/pages/lz-string/index.html)</a> to allow for characters up to Unicode U+058F without being the longest URL ever.</p>
 
 Find the tool here: [tool](https://asterfialla.com/ciphered-hat-draw/)
