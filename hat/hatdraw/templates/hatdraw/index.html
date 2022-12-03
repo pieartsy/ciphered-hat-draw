@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Ciphered Hat Draw</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'hatdraw/style.css' %}">
+</head>
+<body>
+<div id="content" class="container">
+
+    <div class="columns col-sm-11 col-10 col-mx-auto">
+            
+    <div class="column col-12">
+        <h1>Ciphered Hat Draw</h1>
+        <h2>Instructions</h2>
+        <p>One person in your group (such as the usual name-drawer) should put names and tasks in the hat and click the button. The hat will ignore any duplicates in the lists.</p>
+        
+        <p>If there are more names than tasks, the hat, by default, will repeat the tasks again to make sure everyone gets a task (so more than one person will have the same task).</p>
+        
+        <p>If there are more tasks than names, the hat, by default, will continue to distribute the tasks among people (so some people may have more than one task).</p>
+
+        <p>If you toggle the <b>Discard extra tasks</b> option on, everyone will only get one task or less. If there's not enough tasks, only some people will get a task; if there's too many, extra tasks will be discarded.</p>
+
+        <p>Name-drawer, send the <b>results link</b> to all participants. When a participant types in their name on the results page and clicks the <b>Get your task!</b> button, their task assignment will be revealed. (This <i>does</i> mean that anyone, such as the name-drawer, who knows participants' names can find out their assignment...but cheating defeats the point here, doesn't it?)</p>
+    </div>
+    <div class="column col-12">
+        <h2>Hat</h2>
+    </div>
+    
+    <form action="{% url 'hatdraw:assignTasks' %}" method="post">
+    {% csrf_token %}
+    
+    {{form}}
+    
+    <div id="hatbrim" class="column col-12">
+        <input type="submit" class="btn wide" value="Submit">
+    </div>
+    </form>
+        
+    <div id="results" class="columns col-12 col-mx-auto">
+        <div id="link" class="column col-7 col-sm-12 col-ml-auto"></div>
+        <div id="copy" class="column col-5 col-mx-auto"></div>
+    </div>
+
+    </div>
+</div>
+
+<footer id="footer" class="flex-centered columns col-12 col-mx-auto">
+&copy Aster Fialla <script>document.write(new Date().getFullYear());</script>
+</footer>
+</body>
+</html>
