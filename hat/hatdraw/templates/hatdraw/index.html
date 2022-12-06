@@ -5,49 +5,114 @@
     <title>Ciphered Hat Draw</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'hatdraw/style.css' %}">
+
 </head>
 <body>
 <div id="content" class="container">
 
     <div class="columns col-sm-11 col-10 col-mx-auto">
+        
+        <div class="column col-12">
+            <h1>Ciphered Hat Draw</h1>
+            <h2>Instructions</h2>
+            <p>One person in your group (such as the usual name-drawer) should put names and tasks in the hat and click the button. The hat will ignore any duplicates in the lists.</p>
             
-    <div class="column col-12">
-        <h1>Ciphered Hat Draw</h1>
-        <h2>Instructions</h2>
-        <p>One person in your group (such as the usual name-drawer) should put names and tasks in the hat and click the button. The hat will ignore any duplicates in the lists.</p>
-        
-        <p>If there are more names than tasks, the hat, by default, will repeat the tasks again to make sure everyone gets a task (so more than one person will have the same task).</p>
-        
-        <p>If there are more tasks than names, the hat, by default, will continue to distribute the tasks among people (so some people may have more than one task).</p>
+            <p>If there are more names than tasks, the hat, by default, will repeat the tasks again to make sure everyone gets a task (so more than one person will have the same task).</p>
+            
+            <p>If there are more tasks than names, the hat, by default, will continue to distribute the tasks among people (so some people may have more than one task).</p>
 
-        <p>If you toggle the <b>Discard extra tasks</b> option on, everyone will only get one task or less. If there's not enough tasks, only some people will get a task; if there's too many, extra tasks will be discarded.</p>
+            <p>If you toggle the <b>Discard extra tasks</b> option on, everyone will only get one task or less. If there's not enough tasks, only some people will get a task; if there's too many, extra tasks will be discarded.</p>
 
-        <p>Name-drawer, send the <b>results link</b> to all participants. When a participant types in their name on the results page and clicks the <b>Get your task!</b> button, their task assignment will be revealed. (This <i>does</i> mean that anyone, such as the name-drawer, who knows participants' names can find out their assignment...but cheating defeats the point here, doesn't it?)</p>
-    </div>
-    <div class="column col-12">
-        <h2>Hat</h2>
-    </div>
-    
-    <form action="{% url 'hatdraw:assignTasks' %}" method="post">
-    {% csrf_token %}
-    
-    {{form}}
-    
-    <div id="hatbrim" class="column col-12">
-        <input type="submit" class="btn wide" value="Submit">
-    </div>
-    </form>
+            <p>Name-drawer, send the <b>results link</b> to all participants. When a participant types in their name on the results page and clicks the <b>Get your task!</b> button, their task assignment will be revealed. (This <i>does</i> mean that anyone, such as the name-drawer, who knows participants' names can find out their assignment...but cheating defeats the point here, doesn't it?)</p>
+        </div>
+
+        <div class="column col-12">
+            <h2>Hat</h2>
+        </div>
         
-    <div id="results" class="columns col-12 col-mx-auto">
-        <div id="link" class="column col-7 col-sm-12 col-ml-auto"></div>
-        <div id="copy" class="column col-5 col-mx-auto"></div>
-    </div>
+        <form class="column col-12" action="{% url 'hatdraw:assign_tasks' %}"  id="formdata" method="POST" role="form" class="hatform">
+            {% csrf_token %}
+            <div id="hattop" class="columns col-9 col-mx-auto">
+                <div class="columns col-12 col-mx-auto">
+                    <div class="column col-sm-12 col-6 col-ml-auto">
+                        <label for="names" class="form-label">Enter names separated by line: </label>
+                        <textarea class="form-input" id="names" placeholder="Names"></textarea>
+                    </div>
+                    <div class="column col-sm-12 col-6 col-mr-auto">
+                        <label for="tasks" class="form-label">Enter tasks separated by line: </label>
+                        <textarea class="form-input" id="tasks" placeholder="Tasks"></textarea>
+                    </div>
+                </div>
+                <div class="column col-auto col-mx-auto">
+                    <label class="form-switch form-label">Discard extra tasks
+                        <input type="checkbox" id="discard"><i class="form-icon"></i>
+                    </label>
+                </div>
+            </div>
+            
+            <div id="tip" class="column col-9 col-mx-auto"></div>
+            
+            <div id="hatbrim" class="column col-12">
+                <input type="submit" id="assign" class="btn wide" value="Assign">
+            </div>
+        </form>
+            
+        <div id="results" class="columns col-12 col-mx-auto">
+            <div id="link" class="column col-7 col-sm-12 col-ml-auto"></div>
+            <div id="copy" class="column col-5 col-mx-auto"></div>
+        </div>
 
+    </div>
     </div>
 </div>
+<script type="text/javascript">
 
+    document.getElementById("formdata").addEventListener("submit", function(e){
+        e.preventDefault();
+    
+        const tip = document.getElementById("tip"),
+         //   link = document.getElementById("link")
+         //   error = document.getElementById("error")
+          //  copy = document.getElementById("copy")
+            discard = document.getElementById("discard").checked,
+            token = document.cookie.split('=')[1]
+    
+        let names = document.getElementById("names").value,
+           tasks = document.getElementById("tasks").value;
+    
+        //Separates all names and tasks between newlines into an array, then turns it into a set to remove repeated elements, then turns it BACK into an array, then filters to remove empty strings (like if someone hit enter too many times).
+        let namesList = [...new Set(names.split(/\r?\n/))].filter(Boolean),
+            tasksList = [...new Set(tasks.split(/\r?\n/))].filter(Boolean);
+    
+        if (namesList.length == 0 || tasksList.length == 0) {
+            tip.innerHTML = "Make sure the lists aren't empty before you assign.";
+            return;
+        }
+    
+        const hatdata = JSON.stringify({
+            names: namesList,
+            tasks: tasksList,
+            discard: discard
+        });
+
+        console.log(hatdata)
+    
+        fetch('{% url "hatdraw:assign_tasks" %}', {
+          method: 'POST',
+          body: hatdata,
+          headers: {'X-CSRFToken': token}
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    });
+</script>
 <footer id="footer" class="flex-centered columns col-12 col-mx-auto">
-&copy Aster Fialla <script>document.write(new Date().getFullYear());</script>
+    &copy Aster Fialla <script>document.write(new Date().getFullYear());</script>
 </footer>
 </body>
 </html>

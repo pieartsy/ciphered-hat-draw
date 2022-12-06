@@ -2,3 +2,5 @@ todo.txt
 junk.txt
 hatvenv
 db.sqlite3
+hatdraw/
+.env

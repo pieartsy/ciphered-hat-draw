@@ -2,21 +2,23 @@ from django.db import models
 
 # Create your models here.
 class Hat(models.Model):
-    unique_id = models.CharField(max_length=100)
-    hat_names_text = models.TextField()
-    hat_tasks_text = models.TextField()
-    task_discard = models.BooleanField(blank=True)
+    URL = models.CharField(max_length=20)
     def __str__(self):
-        return self.unique_id
+        return self.hatName
 
-class HatName(models.Model):
-    hat_name = models.ForeignKey(Hat, on_delete=models.CASCADE)
-    hat_name_text = models.CharField(max_length=100)
+class Person(models.Model):
+    name = models.CharField(max_length=100)
     def __str__(self):
-        return self.hat_name_text
+        return self.person
 
-class HatTask(models.Model):
-    hat_task = models.ForeignKey(Hat, on_delete=models.CASCADE)
-    hat_task_text = models.CharField(max_length=400)
+class Task(models.Model):
+    description = models.CharField(max_length=400)
     def __str__(self):
-        return self.hat_task_text
+        return self.task
+
+class Assignment(models.Model):
+    hat = models.ForeignKey(Hat, on_delete=models.CASCADE)
+    person = models.ForeignKey(Person, on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    def __str__(self):
+        return f"{self.person.name} in {self.hat.name} has task {self.task.description}"
